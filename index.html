@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultPessoal — Organize sua vida com segurança</title>
+  <meta name="description" content="Gerencie documentos, imóveis, veículos, contas bancárias, seguros e muito mais em um só lugar. Com leitura inteligente de documentos por IA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-dk: #1D4ED8; --blue-lt: #EFF6FF;
+      --slate: #0F172A; --slate2: #1E293B; --gray: #64748B; --gray-lt: #94A3B8;
+      --border: #E2E8F0; --white: #FFFFFF; --bg: #F8FAFC;
+      --green: #10B981; --amber: #F59E0B;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--slate); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; line-height: 1.2; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 2rem;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: .75rem; font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600; color: var(--slate); text-decoration: none; }
+    .nav-logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--blue), #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--slate); }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1.25rem; border-radius: 8px; font-size: .9rem; font-weight: 600; text-decoration: none; transition: all .2s; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+    .btn-primary { background: var(--blue); color: var(--white); }
+    .btn-primary:hover { background: var(--blue-dk); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.3); }
+    .btn-outline { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
+    .btn-outline:hover { background: var(--blue-lt); }
+    .btn-xl { padding: 1rem 2.5rem; font-size: 1.05rem; border-radius: 12px; }
+
+    .hero { padding: 9rem 2rem 6rem; text-align: center; background: linear-gradient(180deg, #F0F7FF 0%, var(--white) 100%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(37,99,235,.08) 0%, transparent 70%); }
+    .hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: var(--blue-lt); color: var(--blue); padding: .35rem 1rem; border-radius: 100px; font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem; border: 1px solid rgba(37,99,235,.15); }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--slate); max-width: 780px; margin: 0 auto 1.5rem; letter-spacing: -.02em; }
+    .hero h1 em { font-style: italic; color: var(--blue); }
+    .hero p { font-size: 1.15rem; color: var(--gray); max-width: 560px; margin: 0 auto 2.5rem; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+
+    .mock-browser { max-width: 900px; margin: 0 auto; background: var(--slate2); border-radius: 16px; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 32px 80px rgba(15,23,42,.25); overflow: hidden; }
+    .mock-bar { background: #1a2235; padding: .75rem 1rem; display: flex; align-items: center; gap: .5rem; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .mock-url { flex: 1; text-align: center; font-size: .75rem; color: #4a5a7a; }
+    .mock-content { padding: 2rem; display: grid; grid-template-columns: 200px 1fr; gap: 1.5rem; }
+    .mock-side { background: #131929; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }
+    .mock-logo-row { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+    .mock-logo-box { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg,#3b82f6,#7c3aed); }
+    .mock-logo-bar { width: 70px; height: 10px; background: #2a3a5c; border-radius: 4px; }
+    .mock-row { height: 32px; border-radius: 6px; padding: 0 .75rem; display: flex; align-items: center; gap: .5rem; }
+    .mock-row.act { background: #1e3a8a; }
+    .mock-icon { width: 14px; height: 14px; border-radius: 3px; background: #3b82f6; flex-shrink: 0; }
+    .mock-bar2 { height: 8px; border-radius: 3px; background: #2a3a5c; flex: 1; }
+    .mock-row.act .mock-bar2 { background: #93c5fd; }
+    .mock-main { display: flex; flex-direction: column; gap: 1rem; }
+    .mock-head { display: flex; justify-content: space-between; align-items: center; }
+    .mock-title { width: 140px; height: 14px; background: #2a3a5c; border-radius: 4px; }
+    .mock-btn-fake { width: 80px; height: 28px; background: #1e3a8a; border-radius: 6px; }
+    .mock-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; }
+    .mock-card { background: #131929; border-radius: 10px; padding: 1rem; border: 1px solid #1e2d4a; }
+    .mock-card-ico { width: 32px; height: 32px; border-radius: 8px; margin-bottom: .75rem; }
+    .mock-card-t { width: 60%; height: 8px; background: #2a3a5c; border-radius: 3px; margin-bottom: .5rem; }
+    .mock-card-v { width: 40%; height: 14px; background: #3b82f6; border-radius: 3px; }
+    .mock-table { background: #131929; border-radius: 10px; padding: 1rem; border: 1px solid #1e2d4a; }
+    .mock-tr { display: flex; gap: .75rem; align-items: center; padding: .5rem 0; border-bottom: 1px solid #1e2d4a; }
+    .mock-tr:last-child { border-bottom: none; }
+    .mock-td { height: 8px; border-radius: 3px; background: #2a3a5c; }
+
+    .logos-section { padding: 3rem 2rem; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+    .logos-label { font-size: .8rem; color: var(--gray-lt); font-weight: 500; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: .08em; }
+    .logos-row { display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .logos-row span { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--gray-lt); }
+
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin-bottom: 1rem; }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--slate); max-width: 600px; margin-bottom: 1rem; }
+    .section-desc { font-size: 1.05rem; color: var(--gray); max-width: 560px; margin-bottom: 3rem; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .feature-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; transition: all .25s; }
+    .feature-card:hover { box-shadow: 0 8px 32px rgba(15,23,42,.08); transform: translateY(-2px); }
+    .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    .feature-card p { font-size: .9rem; color: var(--gray); line-height: 1.7; }
+
+    .how-bg { background: var(--bg); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .step { text-align: center; padding: 2rem 1.5rem; }
+    .step-num { width: 48px; height: 48px; border-radius: 50%; background: var(--blue); color: var(--white); font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+    .step h3 { font-size: 1.05rem; margin-bottom: .5rem; }
+    .step p { font-size: .9rem; color: var(--gray); }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .testimonial { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; }
+    .stars { color: var(--amber); font-size: 1rem; margin-bottom: 1rem; }
+    .testimonial p { font-size: .95rem; color: var(--slate2); line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: .75rem; }
+    .t-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; color: var(--white); flex-shrink: 0; }
+    .t-name { font-weight: 600; font-size: .9rem; }
+    .t-role { font-size: .8rem; color: var(--gray); }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+    .plan-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem; position: relative; transition: all .25s; }
+    .plan-card:hover { box-shadow: 0 8px 32px rgba(15,23,42,.1); }
+    .plan-card.featured { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37,99,235,.08); }
+    .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--blue); color: var(--white); padding: .25rem 1rem; border-radius: 100px; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+    .plan-name { font-size: 1rem; font-weight: 600; color: var(--gray); margin-bottom: .5rem; }
+    .plan-price { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 700; color: var(--slate); line-height: 1; }
+    .plan-price span { font-size: 1rem; font-weight: 400; color: var(--gray); }
+    .plan-desc { font-size: .85rem; color: var(--gray); margin: .75rem 0 1.5rem; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+    .plan-features li { display: flex; align-items: center; gap: .75rem; font-size: .9rem; }
+    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .plan-features li.no::before { content: '✕'; color: var(--gray-lt); }
+    .plan-features li.no { color: var(--gray-lt); }
+
+    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+    .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .faq-q { width: 100%; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: .95rem; font-weight: 600; color: var(--slate); font-family: 'DM Sans', sans-serif; }
+    .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--blue); transition: transform .2s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; padding: 0 1.5rem; font-size: .9rem; color: var(--gray); line-height: 1.7; }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.25rem; }
+
+    .cta-section { background: linear-gradient(135deg, var(--slate) 0%, var(--slate2) 100%); text-align: center; padding: 6rem 2rem; }
+    .cta-section p { color: var(--gray-lt); max-width: 480px; margin: 0 auto 2.5rem; }
+
+    footer { background: var(--slate); color: var(--gray-lt); padding: 3rem 2rem 2rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .footer-brand { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--white); margin-bottom: .5rem; }
+    .footer-desc { font-size: .85rem; max-width: 280px; }
+    .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .footer-col h4 { color: var(--white); font-size: .85rem; font-weight: 600; margin-bottom: 1rem; }
+    .footer-col a { display: block; color: var(--gray-lt); text-decoration: none; font-size: .85rem; margin-bottom: .5rem; transition: color .2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid #1e293b; padding-top: 1.5rem; font-size: .8rem; text-align: center; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mock-content { grid-template-columns: 1fr; }
+      .mock-side { display: none; }
+      .hero-cta { flex-direction: column; align-items: center; }
+      .footer-top { flex-direction: column; }
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeUp .6s ease both; }
+    .delay-1 { animation-delay: .1s; }
+    .delay-2 { animation-delay: .2s; }
+    .delay-3 { animation-delay: .3s; }
+    .delay-4 { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🔐</div>
+    VaultPessoal
+  </a>
+  <div class="nav-links">
+    <a href="#features">Funcionalidades</a>
+    <a href="#how">Como funciona</a>
+    <a href="#pricing">Planos</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div style="display:flex;gap:.75rem">
+    <a href="https://app.vaultpessoal.com.br/login" class="btn btn-outline">Entrar</a>
+    <a href="https://app.vaultpessoal.com.br/login" class="btn btn-primary">Começar grátis</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge animate">✨ Leitura de documentos com Inteligência Artificial</div>
+    <h1 class="animate delay-1">Organize sua vida com <em>segurança</em> e inteligência</h1>
+    <p class="animate delay-2">Documentos, imóveis, veículos, contas bancárias, seguros e senhas — tudo em um único lugar seguro, acessível de qualquer dispositivo.</p>
+    <div class="hero-cta animate delay-3">
+      <a href="https://app.vaultpessoal.com.br/login" class="btn btn-primary btn-xl">Começar grátis agora</a>
+      <a href="#how" class="btn btn-outline btn-xl">Ver como funciona</a>
+    </div>
+    <div class="mock-browser animate delay-4">
+      <div class="mock-bar">
+        <div class="dot" style="background:#FF5F57"></div>
+        <div class="dot" style="background:#FEBC2E"></div>
+        <div class="dot" style="background:#28C840"></div>
+        <div class="mock-url">app.vaultpessoal.com.br</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-side">
+          <div class="mock-logo-row"><div class="mock-logo-box"></div><div class="mock-logo-bar"></div></div>
+          <div class="mock-row act"><div class="mock-icon"></div><div class="mock-bar2"></div></div>
+          <div class="mock-row"><div class="mock-icon" style="background:#2a3a5c"></div><div class="mock-bar2"></div></div>
+          <div class="mock-row"><div class="mock-icon" style="background:#2a3a5c"></div><div class="mock-bar2"></div></div>
+          <div class="mock-row"><div class="mock-icon" style="background:#2a3a5c"></div><div class="mock-bar2"></div></div>
+          <div class="mock-row"><div class="mock-icon" style="background:#2a3a5c"></div><div class="mock-bar2"></div></div>
+        </div>
+        <div class="mock-main">
+          <div class="mock-head"><div class="mock-title"></div><div class="mock-btn-fake"></div></div>
+          <div class="mock-cards">
+            <div class="mock-card"><div class="mock-card-ico" style="background:#1e3a8a"></div><div class="mock-card-t"></div><div class="mock-card-v"></div></div>
+            <div class="mock-card"><div class="mock-card-ico" style="background:#064e3b"></div><div class="mock-card-t"></div><div class="mock-card-v" style="background:#10b981"></div></div>
+            <div class="mock-card"><div class="mock-card-ico" style="background:#451a03"></div><div class="mock-card-t"></div><div class="mock-card-v" style="background:#f59e0b"></div></div>
+          </div>
+          <div class="mock-table">
+            <div class="mock-tr"><div class="mock-td" style="width:30%"></div><div class="mock-td" style="width:20%"></div><div class="mock-td" style="width:15%;background:#3b82f6"></div></div>
+            <div class="mock-tr"><div class="mock-td" style="width:40%"></div><div class="mock-td" style="width:20%"></div><div class="mock-td" style="width:15%;background:#10b981"></div></div>
+            <div class="mock-tr"><div class="mock-td" style="width:25%"></div><div class="mock-td" style="width:20%"></div><div class="mock-td" style="width:15%;background:#f59e0b"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="logos-section">
+  <div class="logos-label">Tecnologias de ponta</div>
+  <div class="logos-row">
+    <span>🔒 Supabase</span>
+    <span>🤖 Claude AI</span>
+    <span>💳 Asaas</span>
+    <span>☁️ Railway</span>
+    <span>⚡ Vercel</span>
+  </div>
+</div>
+
+<section id="features">
+  <div class="container">
+    <div class="section-label">Funcionalidades</div>
+    <h2 class="section-title">Tudo que você precisa para organizar sua vida</h2>
+    <p class="section-desc">Do RG ao seguro do carro, do boleto à senha do banco — centralize tudo com segurança máxima.</p>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon" style="background:#EFF6FF">📄</div><h3>Documentos pessoais</h3><p>RG, CNH, passaporte, certidões e muito mais. Com leitura automática por IA que preenche os campos ao fotografar o documento.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#F0FDF4">🏠</div><h3>Imóveis e veículos</h3><p>Escrituras, IPTU, IPVA, seguros e toda documentação de bens em um só lugar, com alertas de vencimento automáticos.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#FFF7ED">🏦</div><h3>Contas bancárias</h3><p>Registre suas contas, cartões e investimentos. Nunca mais perca acesso a dados importantes de forma segura.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#FDF4FF">🛡️</div><h3>Seguros e planos de saúde</h3><p>Apólices, coberturas, carências e contatos de emergência. Tudo organizado e acessível quando você mais precisar.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#F0FDF4">🔑</div><h3>Cofre de senhas</h3><p>Armazene senhas com criptografia AES-256-GCM. Gere senhas fortes automaticamente e acesse com segurança.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#EFF6FF">👨‍👩‍👧</div><h3>Múltiplos perfis</h3><p>Gerencie a documentação de toda a família. Cada membro tem seu espaço com controle de acesso individualizado.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#FFF7ED">🤖</div><h3>Leitura inteligente com IA</h3><p>Fotografe qualquer documento e a IA extrai automaticamente nome, número, validade e outros dados relevantes.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#FDF4FF">🔗</div><h3>Compartilhamento seguro</h3><p>Compartilhe documentos via links temporários com validade e limite de usos configuráveis.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background:#F0FDF4">🔔</div><h3>Alertas de vencimento</h3><p>Receba notificações antes de vencer CNH, passaporte, seguro do carro e qualquer outro documento cadastrado.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="how-bg">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Como funciona</div>
+    <h2 class="section-title" style="margin:0 auto 1rem">Comece em menos de 2 minutos</h2>
+    <p class="section-desc" style="margin:0 auto 0">Sem instalação, sem complicação. Acesse de qualquer dispositivo com navegador.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Crie sua conta</h3><p>Cadastre-se gratuitamente em segundos. Nenhum cartão necessário para começar.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Adicione seus documentos</h3><p>Fotografe ou digitalize. A IA preenche os campos automaticamente para você.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Convide sua família</h3><p>Adicione perfis para cada membro com controle de acesso personalizado.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Acesse de qualquer lugar</h3><p>Todos seus documentos disponíveis quando e onde você precisar, com segurança total.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">Depoimentos</div>
+    <h2 class="section-title">O que nossos usuários dizem</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial"><div class="stars">★★★★★</div><p>"Finalmente encontrei um lugar seguro para guardar todos os documentos da família. A leitura automática por IA é incrível — fotografo o documento e ele preenche tudo sozinho."</p><div class="t-author"><div class="t-avatar" style="background:#2563EB">RS</div><div><div class="t-name">Ricardo Silva</div><div class="t-role">Empresário, São Paulo</div></div></div></div>
+      <div class="testimonial"><div class="stars">★★★★★</div><p>"Usava planilhas para controlar documentos, mas era um caos. Com o VaultPessoal tudo ficou organizado e consigo compartilhar com minha sócia facilmente."</p><div class="t-author"><div class="t-avatar" style="background:#7C3AED">AM</div><div><div class="t-name">Ana Martins</div><div class="t-role">Advogada, Curitiba</div></div></div></div>
+      <div class="testimonial"><div class="stars">★★★★★</div><p>"Os alertas de vencimento salvaram minha vida — quase deixei a CNH vencer. Agora recebo aviso com antecedência. Recomendo para toda a família!"</p><div class="t-author"><div class="t-avatar" style="background:#10B981">MO</div><div><div class="t-name">Marcos Oliveira</div><div class="t-role">Engenheiro, Belo Horizonte</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" style="background:var(--bg)">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Planos</div>
+    <h2 class="section-title" style="margin:0 auto 1rem">Simples e transparente</h2>
+    <p class="section-desc" style="margin:0 auto 3rem">Comece grátis. Faça upgrade quando precisar de mais.</p>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">Gratuito</div>
+        <div class="plan-price">R$ 0<span>/mês</span></div>
+        <div class="plan-desc">Para começar a organizar sua vida</div>
+        <ul class="plan-features">
+          <li>1 perfil de usuário</li>
+          <li>Até 50 documentos</li>
+          <li>500 MB de armazenamento</li>
+          <li>Alertas de vencimento</li>
+          <li>Cofre de senhas</li>
+          <li class="no">Leitura com IA (OCR)</li>
+          <li class="no">Múltiplos perfis</li>
+        </ul>
+        <a href="https://app.vaultpessoal.com.br/login" class="btn btn-outline" style="width:100%;justify-content:center">Começar grátis</a>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">⭐ Mais popular</div>
+        <div class="plan-name">Família</div>
+        <div class="plan-price">R$ 19<span>,90/mês</span></div>
+        <div class="plan-desc">Para toda a família com IA incluída</div>
+        <ul class="plan-features">
+          <li>4 perfis de usuário</li>
+          <li>Documentos ilimitados</li>
+          <li>5 GB de armazenamento</li>
+          <li>Alertas de vencimento</li>
+          <li>Cofre de senhas</li>
+          <li>✨ Leitura com IA (OCR)</li>
+          <li>Compartilhamento seguro</li>
+        </ul>
+        <a href="https://app.vaultpessoal.com.br/login" class="btn btn-primary" style="width:100%;justify-content:center">Assinar agora</a>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">R$ 39<span>,90/mês</span></div>
+        <div class="plan-desc">Para famílias grandes ou empresas</div>
+        <ul class="plan-features">
+          <li>10 perfis de usuário</li>
+          <li>Documentos ilimitados</li>
+          <li>20 GB de armazenamento</li>
+          <li>Alertas de vencimento</li>
+          <li>Cofre de senhas</li>
+          <li>✨ Leitura com IA (OCR)</li>
+          <li>Compartilhamento seguro</li>
+        </ul>
+        <a href="https://app.vaultpessoal.com.br/login" class="btn btn-outline" style="width:100%;justify-content:center">Assinar agora</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--bg)">
+  <div class="container" style="text-align:center">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title" style="margin:0 auto 3rem">Perguntas frequentes</h2>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Meus dados estão seguros?</button><div class="faq-a">Sim. Utilizamos criptografia AES-256-GCM para dados sensíveis, HTTPS em todas as comunicações e armazenamento seguro na Supabase com Row Level Security. Seus dados nunca são compartilhados com terceiros.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso cancelar quando quiser?</button><div class="faq-a">Sim. Você pode cancelar a qualquer momento. Seu plano permanece ativo até o fim do período pago e só então retorna para o plano gratuito.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Como funciona a leitura de documentos com IA?</button><div class="faq-a">Ao adicionar um documento, você pode fotografar ou fazer upload de uma imagem ou PDF. Nossa IA analisa o documento e extrai automaticamente nome, número, data de validade e órgão emissor, preenchendo os campos do formulário.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso adicionar outros membros da família?</button><div class="faq-a">Sim. Nos planos Família e Premium você pode criar múltiplos perfis com diferentes níveis de acesso. Cada membro vê apenas seus próprios documentos, a menos que você escolha compartilhar.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">O sistema funciona no celular?</button><div class="faq-a">Sim. O VaultPessoal é totalmente responsivo e funciona em qualquer dispositivo com navegador — computador, tablet ou celular. Um app mobile está em desenvolvimento.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quais formas de pagamento são aceitas?</button><div class="faq-a">Aceitamos PIX, boleto bancário e cartão de crédito com recorrência automática. O plano gratuito não requer nenhuma forma de pagamento.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2 class="section-title" style="color:white;margin:0 auto 1rem">Pronto para organizar sua vida?</h2>
+    <p>Comece gratuitamente hoje. Sem cartão de crédito, sem compromisso.</p>
+    <a href="https://app.vaultpessoal.com.br/login" class="btn btn-xl" style="background:white;color:#1e40af;font-weight:700">Criar conta grátis →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">🔐 VaultPessoal</div>
+        <p class="footer-desc">Organize sua vida com segurança e inteligência. Seus documentos sempre acessíveis e protegidos.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Produto</h4>
+          <a href="#features">Funcionalidades</a>
+          <a href="#pricing">Planos e preços</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Acesso</h4>
+          <a href="https://app.vaultpessoal.com.br/login">Entrar</a>
+          <a href="https://app.vaultpessoal.com.br/login">Criar conta</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacidade</a>
+          <a href="#">Termos de uso</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 VaultPessoal. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+<script>
+  function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.feature-card,.step,.testimonial,.plan-card,.faq-item').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='opacity .5s ease, transform .5s ease';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
