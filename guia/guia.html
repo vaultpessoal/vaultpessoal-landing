@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia Rápido — VaultPessoal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#2563EB; --dark:#0F172A; --gray:#64748B; --light:#F8FAFC; --border:#E2E8F0; --green:#059669; --red:#DC2626; --yellow:#D97706; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Inter',sans-serif; background:var(--light); color:var(--dark); line-height:1.7; }
+    a { color:var(--blue); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+
+    header { background:#fff; border-bottom:1px solid var(--border); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+    .logo { display:flex; align-items:center; gap:.6rem; font-family:'Fraunces',serif; font-size:1.2rem; color:var(--dark); text-decoration:none; }
+    .logo img { border-radius:7px; }
+    .header-actions { display:flex; gap:1rem; align-items:center; }
+    .btn-primary { background:var(--blue); color:#fff; padding:.5rem 1.25rem; border-radius:8px; font-size:.9rem; font-weight:600; }
+    .btn-primary:hover { background:#1D4ED8; text-decoration:none; }
+
+    .hero { background:linear-gradient(135deg,#1E3A8A,var(--blue)); color:#fff; padding:4rem 2rem; text-align:center; }
+    .hero h1 { font-family:'Fraunces',serif; font-size:2.4rem; margin-bottom:.75rem; }
+    .hero p { font-size:1.1rem; opacity:.85; max-width:560px; margin:0 auto; }
+
+    .container { max-width:900px; margin:0 auto; padding:3rem 1.5rem 6rem; }
+
+    .section { margin-bottom:3rem; }
+    .section-title { display:flex; align-items:center; gap:.75rem; font-size:1.2rem; font-weight:700; color:var(--dark); margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:2px solid var(--border); }
+    .section-icon { font-size:1.4rem; }
+
+    .steps { display:flex; flex-direction:column; gap:.75rem; }
+    .step { display:flex; align-items:flex-start; gap:1rem; background:#fff; border:1px solid var(--border); border-radius:12px; padding:1rem 1.25rem; }
+    .step-num { width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff; font-weight:700; font-size:.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:.1rem; }
+    .step p { font-size:.95rem; color:#334155; margin:0; }
+    .step strong { color:var(--dark); }
+
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:.75rem; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:1rem; display:flex; align-items:center; gap:.75rem; }
+    .card-icon { font-size:1.4rem; width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .card-txt strong { display:block; font-size:.9rem; color:var(--dark); }
+    .card-txt span { font-size:.8rem; color:var(--gray); }
+
+    .tip { background:#EFF6FF; border-left:4px solid var(--blue); border-radius:0 10px 10px 0; padding:.875rem 1.25rem; margin:1rem 0; }
+    .tip p { color:#1E40AF; font-size:.9rem; margin:0; }
+
+    .alert-row { display:flex; gap:.75rem; margin-bottom:.5rem; flex-wrap:wrap; }
+    .alert-badge { display:flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:8px; font-size:.9rem; font-weight:600; }
+    .alert-red { background:#FEE2E2; color:var(--red); }
+    .alert-yellow { background:#FEF3C7; color:var(--yellow); }
+    .alert-green { background:#D1FAE5; color:var(--green); }
+
+    table { width:100%; border-collapse:collapse; font-size:.9rem; border-radius:12px; overflow:hidden; }
+    th { background:#1E3A8A; color:#fff; padding:.7rem 1rem; text-align:left; }
+    td { padding:.65rem 1rem; border-bottom:1px solid var(--border); }
+    tr:nth-child(even) td { background:#fff; }
+    tr:nth-child(odd) td { background:var(--light); }
+    td:first-child { font-weight:600; color:var(--dark); }
+
+    .plan-table th:nth-child(2) { background:#2563EB; }
+    .plan-table th:nth-child(3) { background:#1D4ED8; }
+    .plan-table th:nth-child(4) { background:#1E3A8A; }
+
+    .faq { display:flex; flex-direction:column; gap:.75rem; }
+    .faq-item { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .faq-q { padding:1rem 1.25rem; font-weight:600; font-size:.95rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+    .faq-q::after { content:'+'; font-size:1.2rem; color:var(--blue); }
+    .faq-item.open .faq-q::after { content:'−'; }
+    .faq-a { display:none; padding:0 1.25rem 1rem; font-size:.9rem; color:#334155; border-top:1px solid var(--border); padding-top:.75rem; }
+    .faq-item.open .faq-a { display:block; }
+
+    footer { background:#0F172A; color:#94A3B8; text-align:center; padding:2rem; font-size:.85rem; }
+    footer a { color:#60A5FA; }
+
+    @media(max-width:640px) {
+      .hero h1 { font-size:1.7rem; }
+      .cards { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">
+    <img src="logo.svg" width="28" height="28" alt="">
+    VaultPessoal
+  </a>
+  <div class="header-actions">
+    <a href="/" style="font-size:.85rem;color:var(--gray)">← Voltar</a>
+    <a href="https://app.vaultpessoal.com.br" class="btn-primary">Acessar o sistema</a>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Guia Rápido</h1>
+  <p>Tudo o que você precisa saber para usar o VaultPessoal em poucos minutos.</p>
+</div>
+
+<div class="container">
+
+  <!-- ACESSO -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">🔐</span> Acesso ao Sistema</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><p>Acesse <strong>app.vaultpessoal.com.br</strong> ou abra o app no celular</p></div>
+      <div class="step"><div class="step-num">2</div><p>Digite seu <strong>e-mail e senha da conta</strong></p></div>
+      <div class="step"><div class="step-num">3</div><p>Selecione o <strong>perfil desejado</strong> (se houver mais de um)</p></div>
+      <div class="step"><div class="step-num">4</div><p>Se o perfil tiver senha, ela será solicitada</p></div>
+    </div>
+    <div class="tip"><p>💡 <strong>Trocar de perfil no web:</strong> Perfis → clique no card do perfil desejado.<br>
+    💡 <strong>Trocar de perfil no app:</strong> toque no avatar (círculo com iniciais) no Dashboard.</p></div>
+  </div>
+
+  <!-- PERFIS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">👥</span> Perfis</div>
+    <div class="cards">
+      <div class="card"><div class="card-icon" style="background:#EFF6FF">👑</div><div class="card-txt"><strong>Master</strong><span>Dono da conta. Acesso total.</span></div></div>
+      <div class="card"><div class="card-icon" style="background:#EFF6FF">🛡️</div><div class="card-txt"><strong>Administrador</strong><span>Cria e edita todos os dados.</span></div></div>
+      <div class="card"><div class="card-icon" style="background:#F0FDF4">👤</div><div class="card-txt"><strong>Usuário</strong><span>Gerencia seus próprios dados.</span></div></div>
+      <div class="card"><div class="card-icon" style="background:#F1F5F9">👁️</div><div class="card-txt"><strong>Somente leitura</strong><span>Visualiza, não edita.</span></div></div>
+    </div>
+    <div class="tip" style="margin-top:1rem"><p>💡 Convide pessoas em <strong>Perfis → Convidar</strong>. O link expira em 7 dias e só pode ser usado uma vez.</p></div>
+  </div>
+
+  <!-- DOCUMENTOS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">📄</span> Documentos</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><p>Va em <strong>Documentos → + Novo</strong></p></div>
+      <div class="step"><div class="step-num">2</div><p>Escolha a visibilidade: <strong>Pessoal</strong> (só você) ou <strong>Família</strong> (todos os perfis)</p></div>
+      <div class="step"><div class="step-num">3</div><p><strong>Opcional:</strong> use o OCR para fotografar o documento e preencher automaticamente com IA</p></div>
+      <div class="step"><div class="step-num">4</div><p>Preencha: nome, tipo, número, emissor e datas</p></div>
+      <div class="step"><div class="step-num">5</div><p>Após salvar, anexe arquivos (fotos, PDFs) ao documento</p></div>
+    </div>
+    <div class="tip"><p>💡 Para <strong>compartilhar um arquivo</strong>, abra o documento → "Compartilhar" → um link seguro é gerado com validade de 7 dias.</p></div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">🔔</span> Alertas de Vencimento</div>
+    <p style="margin-bottom:1rem;font-size:.95rem;color:#334155">O sistema monitora automaticamente todos os documentos com data de validade:</p>
+    <div class="alert-row">
+      <div class="alert-badge alert-red">🔴 Vencidos — data ultrapassada</div>
+      <div class="alert-badge alert-yellow">🟡 Próximos — vencem em 30 dias</div>
+      <div class="alert-badge alert-green">🟢 Em dia — mais de 90 dias</div>
+    </div>
+    <div class="tip" style="margin-top:1rem"><p>💡 Os alertas aparecem no Painel inicial. Clique em qualquer card para ver a lista completa.</p></div>
+  </div>
+
+  <!-- MÓDULOS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">📦</span> Módulos Disponíveis</div>
+    <table>
+      <tr><th>Módulo</th><th>O que cadastrar</th></tr>
+      <tr><td>📄 Documentos</td><td>RG, CNH, Passaporte, CPF, certidões e outros</td></tr>
+      <tr><td>🏠 Imóveis</td><td>Escritura, IPTU, matrícula, valor, tipo de imóvel</td></tr>
+      <tr><td>🚗 Veículos</td><td>Placa, RENAVAM, IPVA, licenciamento, revisão</td></tr>
+      <tr><td>🏦 Contas Bancárias</td><td>Banco, agência, conta, tipo (corrente/poupança)</td></tr>
+      <tr><td>🛡️ Seguros</td><td>Apólice, seguradora, vigência, prêmio mensal</td></tr>
+      <tr><td>❤️ Saúde</td><td>Operadora, plano, carteirinha, vencimento, mensalidade</td></tr>
+      <tr><td>🔑 Cofre de Senhas</td><td>Login, senha (criptografada), URL, usuário</td></tr>
+    </table>
+  </div>
+
+  <!-- PLANOS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">💳</span> Planos</div>
+    <table class="plan-table">
+      <tr><th>Recurso</th><th>Gratuito</th><th>Família</th><th>Premium</th></tr>
+      <tr><td>Preço</td><td>Grátis</td><td>R$ 19,90/mês</td><td>R$ 39,90/mês</td></tr>
+      <tr><td>Perfis</td><td>1</td><td>4</td><td>10</td></tr>
+      <tr><td>Documentos</td><td>50</td><td>Ilimitado</td><td>Ilimitado</td></tr>
+      <tr><td>Armazenamento</td><td>500 MB</td><td>5 GB</td><td>20 GB</td></tr>
+      <tr><td>OCR com IA</td><td>❌</td><td>✅</td><td>✅</td></tr>
+    </table>
+    <div class="tip" style="margin-top:1rem"><p>💡 Para fazer upgrade: <strong>Dashboard → "Fazer upgrade"</strong> ou menu <strong>Minha Assinatura</strong>. Aceita PIX, boleto e cartão de crédito.</p></div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">❓</span> Perguntas Frequentes</div>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como recuperar minha senha?</div>
+        <div class="faq-a">Na tela de login, clique em "Esqueci minha senha". Digite seu e-mail e você receberá um link de recuperação válido por 1 hora.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso acessar pelo celular e pelo computador ao mesmo tempo?</div>
+        <div class="faq-a">Sim! Todos os dados são sincronizados em tempo real entre o app mobile e o sistema web.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como funciona o OCR com IA?</div>
+        <div class="faq-a">Ao criar um documento, clique no banner azul de OCR. Você pode fotografar o documento com a câmera ou enviar um arquivo. A IA extrai as informações automaticamente e preenche os campos. Disponível nos planos Família e Premium.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Meus dados são seguros?</div>
+        <div class="faq-a">Sim. Utilizamos criptografia AES-256-GCM para dados sensíveis, HTTPS em toda comunicação e Row Level Security no banco de dados. Suas senhas nunca são armazenadas em texto simples.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como cancelar minha assinatura?</div>
+        <div class="faq-a">Acesse Minha Assinatura no menu lateral e clique em "Cancelar assinatura". O plano permanece ativo até o fim do período pago. Não há reembolso proporcional.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso compartilhar documentos com pessoas fora da minha conta?</div>
+        <div class="faq-a">Sim! Abra um documento com arquivos anexados e clique em "Compartilhar". Um link temporário é gerado com validade de 7 dias. Qualquer pessoa com o link pode acessar o arquivo, sem precisar de conta no VaultPessoal.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:3rem">
+    <a href="https://app.vaultpessoal.com.br" class="btn-primary" style="display:inline-block;padding:.875rem 2rem;font-size:1rem">
+      Acessar o VaultPessoal →
+    </a>
+    <p style="margin-top:1rem;font-size:.85rem;color:var(--gray)">
+      <a href="/privacidade.html">Política de Privacidade</a> · <a href="/termos.html">Termos de Uso</a> · <a href="/">Página inicial</a>
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 VaultPessoal · <a href="/privacidade.html">Privacidade</a> · <a href="/termos.html">Termos de Uso</a></p>
+</footer>
+
+<script>
+  function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+</script>
+</body>
+</html>
